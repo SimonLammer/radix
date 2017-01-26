@@ -5,15 +5,27 @@ var interval;
 
 function main(speed) {
 	var bases = askForBases();
-	createTable(bases);
-	var counter = 0;
+	var rowHeight = createTable(bases);
+	var counter = 1;
 	interval = setInterval(function() {
-		var tableRowHtml = '<tr>';
+		$('#table > tbody > tr:first-child').before('<tr></tr>');
+		var tableRowContent = '';
 		for (var i = 0; i < bases.length; i++) {
-			tableRowHtml += '<td>' + counter.toString(bases[i]) + '</td>';
+			tableRowContent += '<td>' + counter.toString(bases[i]) + '</td>';
 		}
-		tableRowHtml += '</tr>';
-		$('#table > tbody > tr:first-child').before(tableRowHtml);
+		var newRow = $('#table > tbody > tr:first-child');
+		newRow.height(0);
+		newRow.css({
+			opacity: 0
+		});
+		newRow.animate({
+			height: [rowHeight, "linear"]
+		}, speed, function() {
+			newRow.html(tableRowContent);
+			newRow.animate({
+				opacity: [1, "linear"]
+			})
+		});
 		counter++;
 	}, speed);
 }
@@ -40,9 +52,14 @@ function createTable(bases) {
 	var relativeColumnWidth = 100 / bases.length;
 	var tableHeaderHtml = '';
 	for (var i = 0; i < bases.length - 1; i++) {
-		
 		tableHeaderHtml += '<td width="' + relativeColumnWidth + '%">' + bases[i] + '</td>';
 	}
 	tableHeaderHtml += '<td>' + bases[bases.length - 1] + '</td>';
 	$('#table thead tr').html(tableHeaderHtml);
+	var tableBodyRowHtml = '';
+	for (var i = 0; i < bases.length; i++) {
+		tableBodyRowHtml += '<td>0</td>'
+	}
+	var row = $('#table tbody tr').html(tableBodyRowHtml);
+	return row.height();
 }
