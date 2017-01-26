@@ -1,9 +1,10 @@
 main(
-	/* speed = */ 1000
+	/* speed = */ 1000,
+	/* maxRows = */ 30
 );
 var interval;
 
-function main(speed) {
+function main(speed, maxRows) {
 	var bases = askForBases();
 	var rowHeight = createTable(bases);
 	var counter = 1;
@@ -24,7 +25,10 @@ function main(speed) {
 			newRow.html(tableRowContent);
 			newRow.animate({
 				opacity: [1, "linear"]
-			})
+			});
+			setTimeout(function() {
+				newRow.remove();
+			}, speed * maxRows);
 		});
 		counter++;
 	}, speed);
