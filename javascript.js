@@ -1,13 +1,14 @@
 main(
-	/* speed = */ 1000,
-	/* maxRows = */ 30
+	/* speed = */ 1000
 );
+var counter;
 var interval;
 
-function main(speed, maxRows) {
+function main(speed) {
 	var bases = askForBases();
 	var rowHeight = createTable(bases);
-	var counter = 1;
+	var maxRows = Math.ceil($(window).height() / rowHeight);
+	counter = 1;
 	interval = setInterval(function() {
 		$('#table > tbody > tr:first-child').before('<tr></tr>');
 		var tableRowContent = '';
